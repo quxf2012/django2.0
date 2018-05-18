@@ -100,3 +100,19 @@ SESSION_SAVE_EVERY_REQUEST=False
 # session入缓存并写一份到db中.
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 SESSION_COOKIE_AGE = (60 * 60 * 24) * 14
+
+
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'basic': {
+            'type': 'basic'
+        }
+    },
+    "DOC_EXPANSION":"none"
+
+}
+
+REDOC_SETTINGS = {
+   'LAZY_RENDERING': True,
+}

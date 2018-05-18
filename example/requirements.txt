@@ -9,7 +9,7 @@ pygments  #测试用
 
 
 #ansible>=2.5.2
-#mysqlclient>=1.3.12
+mysqlclient>=1.3.12
 
 #pylint
 #pylint-django
