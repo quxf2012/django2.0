@@ -1,0 +1,20 @@
+-r requirements.txt
+
+##api doc##
+swagger-spec-validator>=2.1.0
+drf-yasg>=1.7.4
+flex>=6.13.1
+
+
+##test pkg
+pygments
+
+#ansible>=2.5.2
+
+#dev test pkg
+mysqlclient>=1.3.12
+#pylint
+#pylint-django
+#hiredis
+#redis  #(from django-redis-cache)
+django-redis-cache

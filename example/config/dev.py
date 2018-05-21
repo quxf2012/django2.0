@@ -39,14 +39,15 @@ CACHES = {
         'BACKEND': 'redis_cache.RedisCache',
         'TIMEOUT': 300,
         'LOCATION': [
-            '192.168.128.101:6379',
+            # '192.168.128.101:6379',
+            '127.0.0.1:6379',
             # '<host>:<port>',
             # '<host>:<port>',
         ],
         'OPTIONS': {
             'DB': 1,
             # 'PASSWORD': 'yadayada',
-            'PARSER_CLASS': 'redis.connection.HiredisParser',
+            # 'PARSER_CLASS': 'redis.connection.HiredisParser',
             'CONNECTION_POOL_CLASS': 'redis.BlockingConnectionPool',
             'CONNECTION_POOL_CLASS_KWARGS': {
                 'max_connections': 100,
@@ -83,7 +84,6 @@ CSRF_TRUSTED_ORIGINS=["subdomain.example.com"]    #".example.com" all example.co
 
 
 
-
 """
 session配置
 https://docs.djangoproject.com/en/2.0/ref/settings/#sessions
@@ -112,6 +112,7 @@ SWAGGER_SETTINGS = {
     "DOC_EXPANSION":"none"
 
 }
+
 
 REDOC_SETTINGS = {
    'LAZY_RENDERING': True,

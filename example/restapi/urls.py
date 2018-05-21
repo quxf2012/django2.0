@@ -9,8 +9,8 @@ router.register('snippets1', views.SnippetList)
 
 router.register("users", views.UserViewSet)
 router.register("groups", views.GroupViewSet)
-urlpatterns = [
 
+urlpatterns = [
     path('snippets/', views.snippet_list),
     path('snippets/<int:pk>/', views.snippet_detail),
 ]
@@ -18,8 +18,11 @@ urlpatterns = [
 # restframework
 urlpatterns += [
     path('', include(router.urls)),
-    path("auth/", include("rest_framework.urls", namespace="rest_framework")),
-    path('auth-token/', obtain_auth_token),
 ]
 # docurls
 urlpatterns += doc_urlpatterns
+
+urlpatterns += [
+    path("auth/", include("rest_framework.urls", namespace="rest_framework")),
+    path('auth/token/', obtain_auth_token,name="token"),
+]

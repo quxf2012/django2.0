@@ -152,3 +152,6 @@ REST_FRAMEWORK = {
     ),
     # 'PAGE_SIZE': 10
 }
+
+#登录成功后默认跳转页面
+LOGIN_REDIRECT_URL='/'
