@@ -4,12 +4,16 @@
             "type": "python 3.6",
             "user": "app",
             "processes": 2,
+            "home":"/data/python/venv/restful",
             "path": "/code/python/Django2.0/example",
             "module": "wsgi"
         }
     },
     "listeners": {
-        "*.8001": {
+        "*:8401": {
+            "application": "django_restful"
+        },
+        "unix:///tmp/django_restful.sock":{
             "application": "django_restful"
         }
     }
