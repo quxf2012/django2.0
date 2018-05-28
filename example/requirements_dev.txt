@@ -11,8 +11,10 @@ pygments
 
 #ansible>=2.5.2
 
+
+
 #dev test pkg
-mysqlclient>=1.3.12
+mysqlclient>=1.3.12   #libmysqlclient-dev
 #pylint
 #pylint-django
 #hiredis

@@ -1,0 +1,16 @@
+{
+    "applications": {
+        "django_restful": {
+            "type": "python 3.6",
+            "user": "app",
+            "processes": 2,
+            "path": "/code/python/Django2.0/example",
+            "module": "wsgi"
+        }
+    },
+    "listeners": {
+        "*.8001": {
+            "application": "django_restful"
+        }
+    }
+}

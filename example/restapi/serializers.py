@@ -28,6 +28,8 @@ class SnippetSerializer(serializers.Serializer):
         instance.save()
         return instance
 
+    def get_permissions(self):
+        pass
 
 # class SnippetSerializer(serializers.ModelSerializer):
 #     class Meta:
