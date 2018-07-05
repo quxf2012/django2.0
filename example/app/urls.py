@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
-from django.contrib.auth.views import login,logout
+from django.contrib.auth.views import login, logout
 
 # from rest_framework_swagger.views import get_swagger_view
 # schema_view = get_swagger_view(title="API DOC")
@@ -29,4 +29,6 @@ urlpatterns = [
     path('web/', include('web.urls')),  # path('web/', include('web.urls', 'web')),
     # path('www/', include('www.urls')),
     path('api/', include('restapi.urls')),
+
+    path('chan/', include("MyChannels.urls"))
 ]

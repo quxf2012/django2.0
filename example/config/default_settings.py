@@ -38,8 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework.authtoken',    #api认证模块
-    'drf_yasg'
+    'rest_framework.authtoken',  # api认证模块
+    'drf_yasg',
+    "channels",
+    "MyChannels"
 
 ]
 
@@ -152,5 +154,38 @@ REST_FRAMEWORK = {
     # 'PAGE_SIZE': 10
 }
 
-#登录成功后默认跳转页面
-LOGIN_REDIRECT_URL='/'
+# 登录成功后默认跳转页面
+LOGIN_REDIRECT_URL = '/'
+
+
+
+ASGI_APPLICATION = 'app.routing.application'
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": 'MyChannels.redis_backend.RedisChannel',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379), ]
+        }
+    }
+}
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG' if DEBUG else 'INFO',
+        },
+        'log': {
+            'handlers': ['console'],
+            'level': 'DEBUG'
+        }
+    },
+}

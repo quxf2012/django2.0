@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 import os
 import sys
-import multiprocessing
-from multiprocessing import Process, Queue
-#python manage.py runserver 0.0.0.0:2001 --noreload
+import subprocess
+
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "app.settings")
     os.environ.setdefault("DJANGO_SETTINGS_ENV", "DEV")
@@ -16,10 +15,6 @@ if __name__ == "__main__":
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
-
-    process = Process(target=execute_from_command_line, args=(["", "runworker", 'send-noti'],))
-    print("启动子进程")
-    process.start()
-
+    print(sys.argv)
     execute_from_command_line(sys.argv)
-    process.join()
+    #execute_from_command_line(["manage.py","runworker",'send-noti'])

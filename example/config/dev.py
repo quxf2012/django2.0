@@ -9,12 +9,10 @@ import os
 # 定位到manage.py文件所在的位置
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'llo*3uru2ea1ovrz$^k9@_0-)pa*#4$&q=d$24c6i9)-l*&6j4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 
 # Database DB配置
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
@@ -24,7 +22,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # 缓存配置
 CACHES = {
@@ -36,7 +33,7 @@ CACHES = {
         # 'LOCATION': 'unique-snowflake',
     },
     'redis': {
-        'BACKEND': 'redis_cache.RedisCache',
+        "BACKEND": "django_redis.cache.RedisCache",
         'TIMEOUT': 300,
         'LOCATION': [
             # '192.168.128.101:6379',
@@ -60,7 +57,6 @@ CACHES = {
 }
 CACHES['default'] = CACHES['locmem']
 
-
 """
 邮件配置
 https://docs.djangoproject.com/en/2.0/topics/email/
@@ -70,9 +66,6 @@ https://docs.djangoproject.com/en/2.0/topics/email/
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'mail.log')
 
-
-
-
 """
 CSRF
 https://docs.djangoproject.com/en/2.0/ref/settings/#security
@@ -81,8 +74,6 @@ CSRF_COOKIE_DOMAIN=None
 
 CSRF_TRUSTED_ORIGINS=["subdomain.example.com"]    #".example.com" all example.com subdomains
 """
-
-
 
 """
 session配置
@@ -101,19 +92,16 @@ SESSION_SAVE_EVERY_REQUEST=False
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 SESSION_COOKIE_AGE = (60 * 60 * 24) * 14
 
-
-
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
         'basic': {
             'type': 'basic'
         }
     },
-    "DOC_EXPANSION":"none"
+    "DOC_EXPANSION": "none"
 
 }
 
-
 REDOC_SETTINGS = {
-   'LAZY_RENDERING': True,
+    'LAZY_RENDERING': True,
 }
