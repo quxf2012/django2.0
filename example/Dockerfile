@@ -3,7 +3,7 @@ MAINTAINER quxf2012 <quxf2012@gmail.com>
 WORKDIR /code/
 ADD requirements.txt requirements_dev.txt /code/
 ADD requirements_dev.txt /code/
-RUN sed -i 's#http://dl-cdn.alpinelinux.org#https://mirrors.aliyun.com#' /etc/apk/repositories
+#RUN sed -i 's#http://dl-cdn.alpinelinux.org#https://mirrors.aliyun.com#' /etc/apk/repositories
 RUN set -ex \
     && apk add --no-cache --virtual .build-deps \
             mysql-dev \
