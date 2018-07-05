@@ -1,4 +1,4 @@
--i https://pypi.doubanio.com/simple/
+#-i https://pypi.doubanio.com/simple/
 
 django==2.0.6
 djangorestframework>=3.8.2
