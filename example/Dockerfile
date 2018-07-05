@@ -16,9 +16,14 @@ RUN set -ex \
     && apk del .build-deps \
     \
     && find /usr/local -depth \
-		\( \
-			\( -type d -a \( -name test -o -name tests \) \) \
-			-o \
-			\( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
-		\) -exec rm -rf '{}' + \
+        \( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
+        -exec rm -rf '{}' + \
 
+
+
+#&& find /usr/local -depth \
+#		\( \
+#			\( -type d -a \( -name test -o -name tests \) \) \
+#			-o \
+#			\( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
+#		\) -exec rm -rf '{}' + \
