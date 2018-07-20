@@ -1,15 +1,14 @@
-from django.shortcuts import render
-
 # Create your views here.
 
 from django.shortcuts import render
-from django.utils.safestring import mark_safe
-import json
 
 
-
-
+# room_name_json': mark_safe(json.dumps(room_name), ),
 def room(request, room_name):
-    return render(request, 'MyChannels/room.html', {
-        'room_name_json': mark_safe(json.dumps(room_name))
-    })
+    context = {
+        'data': {
+            'room_name_json': room_name,
+            "user": request.GET.get('user', '')
+        }
+    }
+    return render(request, 'MyChannels/room.html', context=context)

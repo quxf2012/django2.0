@@ -126,6 +126,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+
 # DEFAULT_CHARSET = 'utf-8'
 
 
@@ -157,28 +159,48 @@ REST_FRAMEWORK = {
 # 登录成功后默认跳转页面
 LOGIN_REDIRECT_URL = '/'
 
-
+PHOST = os.environ.get("PHOST", '127.0.0.1')
 
 ASGI_APPLICATION = 'app.routing.application'
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": 'MyChannels.redis_backend.RedisChannel',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379), ]
+            "hosts": [(PHOST, 6379), ]
         }
     }
 }
 
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            # 'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+            # 'format': 'time[%(asctime)s] category[%(name)s] %(levelname)s %(pathname)s Line[%(lineno)d] module[%(module)s] func[%(funcName)s] Msg[%(message)s]'
+            'format': '%(levelname)s\t[%(asctime)s]\t%(name)s\t%(filename)s\tLine[%(lineno)d]\t"%(message)s"'
+        },
+        'simple': {
+            'format': '%(levelname)s\t%(module)s[%(lineno)d]\t%(message)s'
+        },
+        'debug': {
+            'format': '%(asctime)s\t%(name)s\t%(levelname)s\t%(pathname)s(%(lineno)d)\t%(module)s(%(funcName)s)\t%(message)s'
+        }
+    },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
         },
+        'system': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'debug'
+        }
     },
     'loggers': {
+        'root': {
+            'handlers': ['system'],
+            'level': 'DEBUG'
+        },
         'django.db.backends': {
             'handlers': ['console'],
             'level': 'DEBUG' if DEBUG else 'INFO',
@@ -186,6 +208,18 @@ LOGGING = {
         'log': {
             'handlers': ['console'],
             'level': 'DEBUG'
-        }
+        },
+        'asyncio': {
+            'handlers': ['system'],
+            'level': 'DEBUG'
+        },
+        'daphne': {
+            'handlers': ['system'],
+            'level': 'DEBUG'
+        },
+        'django.channels': {
+            'handlers': ['system'],
+            'level': 'DEBUG'
+        },
     },
 }

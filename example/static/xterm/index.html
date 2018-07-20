@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="xterm.css"/>
+    <link rel="stylesheet" href="addons/fullscreen/fullscreen.css"/>
+    <link rel="stylesheet" href="style.css"/>
+    <script src="xterm.js"></script>
+    <script src="addons/terminado/terminado.js"></script>
+    <script src="addons/attach/attach.js"></script>
+
+    <script src="addons/zmodem/zmodem.js"></script>
+    <script src="addons/fit/fit.js"></script>
+    <script src="addons/fullscreen/fullscreen.js"></script>
+    <script src="addons/search/search.js"></script>
+
+</head>
+<body>
+<div class="container">
+    <div id="terminal-container"></div>
+</div>
+<script>
+    terminado.apply(Terminal);
+
+    var term = new Terminal(),
+        protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://',
+        socketURL = protocol + location.hostname + ((location.port) ? (':' + location.port) : '') + "/ws/webshell/";
+
+    sock = new WebSocket(socketURL);
+
+    sock.addEventListener('open', function () {
+        term.terminadoAttach(sock);
+    });
+
+    term.open(document.getElementById('terminal-container'));
+</script>
+</body>
+</html>

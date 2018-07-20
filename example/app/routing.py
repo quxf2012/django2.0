@@ -26,7 +26,7 @@ application = ProtocolTypeRouter(
             )
         ),
         'channel': ChannelNameRouter(
-            MyChannels.routing.chanNameRouter
+            MyChannels.routing.BackgroundTaskRouter
         )
     }
 )

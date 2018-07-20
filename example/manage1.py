@@ -18,3 +18,4 @@ if __name__ == "__main__":
     print(sys.argv)
     execute_from_command_line(sys.argv)
     #execute_from_command_line(["manage.py","runworker",'send-noti'])
+from twisted.internet import reactor
