@@ -171,55 +171,59 @@ CHANNEL_LAYERS = {
     }
 }
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            # 'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
-            # 'format': 'time[%(asctime)s] category[%(name)s] %(levelname)s %(pathname)s Line[%(lineno)d] module[%(module)s] func[%(funcName)s] Msg[%(message)s]'
-            'format': '%(levelname)s\t[%(asctime)s]\t%(name)s\t%(filename)s\tLine[%(lineno)d]\t"%(message)s"'
-        },
-        'simple': {
-            'format': '%(levelname)s\t%(module)s[%(lineno)d]\t%(message)s'
-        },
-        'debug': {
-            'format': '%(asctime)s\t%(name)s\t%(levelname)s\t%(pathname)s(%(lineno)d)\t%(module)s(%(funcName)s)\t%(message)s'
-        }
-    },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-        'system': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'debug'
-        }
-    },
-    'loggers': {
-        'root': {
-            'handlers': ['system'],
-            'level': 'DEBUG'
-        },
-        'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'DEBUG' if DEBUG else 'INFO',
-        },
-        'log': {
-            'handlers': ['console'],
-            'level': 'DEBUG'
-        },
-        'asyncio': {
-            'handlers': ['system'],
-            'level': 'DEBUG'
-        },
-        'daphne': {
-            'handlers': ['system'],
-            'level': 'DEBUG'
-        },
-        'django.channels': {
-            'handlers': ['system'],
-            'level': 'DEBUG'
-        },
-    },
-}
+from .logging_conf import DEFAULT_LOGGING as LOGGING
+
+# DEFAULT_LOG_LEV='ERROR'
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'formatters': {
+#         'verbose': {
+#             # 'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+#             # 'format': 'time[%(asctime)s] category[%(name)s] %(levelname)s %(pathname)s Line[%(lineno)d] module[%(module)s] func[%(funcName)s] Msg[%(message)s]'
+#             'format': '%(levelname)s\t[%(asctime)s]\t%(name)s\t%(filename)s\tLine[%(lineno)d]\t"%(message)s"'
+#         },
+#         'simple': {
+#             'format': '%(levelname)s\t%(module)s[%(lineno)d]\t%(message)s'
+#         },
+#         'debug': {
+#             'format': '%(asctime)s\t%(name)s\t%(levelname)s\t%(pathname)s(%(lineno)d)\t%(module)s(%(funcName)s)\t%(message)s'
+#         }
+#     },
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#             'formatter':'simple'
+#         },
+#         'system': {
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'debug'
+#         }
+#     },
+#     'loggers': {
+#         'root': {
+#             'handlers': ['system'],
+#             'level': DEFAULT_LOG_LEV
+#         },
+#         'django.db.backends': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG' if DEBUG else 'INFO',
+#         },
+#         'log': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG'
+#         },
+#         'asyncio': {
+#             'handlers': ['system'],
+#             'level': DEFAULT_LOG_LEV
+#         },
+#         'daphne': {
+#             'handlers': ['system'],
+#             'level': DEFAULT_LOG_LEV
+#         },
+#         'django.channels': {
+#             'handlers': ['system'],
+#             'level': DEFAULT_LOG_LEV
+#         },
+#     },
+# }

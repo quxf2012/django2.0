@@ -8,25 +8,43 @@ import asyncio
 import json
 # from channels.security.websocket import AllowedHostsOriginValidator
 import logging
-
+import threading
 import paramiko
 from asgiref.sync import sync_to_async, async_to_sync
 from channels.generic.websocket import AsyncWebsocketConsumer
+import time
+import datetime
+import socket
 
-logger = logging.getLogger('log')
+socket.setdefaulttimeout(5)
+
+logger = logging.getLogger(__name__)
+
+
+def logthread(key):
+    logger.debug(f'{key}  {threading.current_thread()}')
+
+
+def datetime1():
+    return datetime.datetime.now()
 
 
 def sshClient():
     try:
+        # logger.debug(f'sshClient {threading.current_thread()}')
         ssh_client = paramiko.SSHClient()
         ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        logger.debug(f"connect start {datetime1()}")
+        # time.sleep(1000)
         ssh_client.connect('127.0.0.1', 22, 'quxf', '1111')
+        logger.debug(f"connect end {datetime1()}")
         # std_in, std_out, std_err = ssh_client.exec_command(command)
         # shell = ssh_client.invoke_shell(term="xterm")  # width=200, height=300
         # shell.recv()
         return ssh_client
     except Exception as e:
-        print(e)
+        logger.debug(f"error end {datetime1()}")
+        logger.error(e)
 
 
 # AsyncJsonWebsocketConsumer
@@ -44,36 +62,98 @@ class WebShellConsumer(AsyncWebsocketConsumer):
         # await self.send(bytes_data=json.dumps(['stdout', message]).encode())
         await self.send(data)
 
-    def from_shell_get_data(self):
+        # send(msg)
 
-        msg = self.shell.recv(65535)
-        # logger.debug(f"callback{msg}")
-        loop = asyncio.get_event_loop()
-        send = self.async_send(msg)
-        loop.create_task(send)
+    # @staticmethod
+    # def sed_shell_to_client_with_executor(shell,send):
+
+    def shell_recv(self):
+        # time.sleep(10)
+        # logthread('shell_recv')
+        data = self.shell.recv(65535)
+        # time.sleep(10)
+        return data
+
+    def run_in_executor(self, call, *args):
+        """ run in default execuror"""
+        return self.loop.run_in_executor(None, call, *args)
+
+    async def _from_shell_get_data(self, use_executor=True):
+        # time.sleep(3)
+        # time.sleep(10)
+
+        # logger.debug(f'reader {threading.current_thread()}')
+        # 从不支持协程的函数中取数
+
+        if not self.shell.recv_ready():
+            return
+        self.remove_reader()
+        # msg = self.shell_recv()
+
+        # msg = await self.run_in_executor(self.shell.recv,65535)
+        # logger.debug("recv data start ..")
+        msg = await self.run_in_executor(self.shell_recv)
+        # logger.debug("recv data end ..")
+
+        # logger.debug(f'reader end {threading.current_thread()}')
+
+        # if use_executor:
+        #     """在另一个线程里面执行回调函数"""
+        #     self.run_in_executor(async_to_sync(self.async_send), msg)
+        #     # asyncio.run(self.async_send(msg)) #不能在一个loop中
+        # else:
+        # """在默认循环中执行回调函数 create_task(首选) 和 ensure_future都可以"""
+        await self.async_send(msg)
+        self.add_reader(use_executor)
+        # asyncio.ensure_future(send)
         # logger.debug(send)
 
-    def _disconnect_ssh(self):
+    def from_shell_get_data(self, use_executor=True):
+        self.loop.create_task(self._from_shell_get_data(use_executor))
 
+    def _disconnect_ssh(self):
         self.shell.close()
-        self.loop.remove_reader(self.shell_fd)
+        self.remove_reader()
+        logger.debug("Connect closed!")
         self.ssh.close()
 
     async def disconnect(self, code):
-        sync_to_async(self._disconnect_ssh)()
+        await self.async_send("连接已关闭..")
+        self.run_in_executor(self._disconnect_ssh)
 
-    def set_shell(self):
-        self.ssh = sshClient()
+
+    def add_reader(self, use_executor):
+        self.loop.add_reader(self.shell_fd, self.from_shell_get_data, use_executor)
+
+    def remove_reader(self):
+        self.loop.remove_reader(self.shell_fd)
+
+    async def set_shell(self, use_executor=True):
+        # time.sleep(10)
+        # time.sleep(10)
+        # logger.debug(f'set_shell {threading.current_thread()}')
+        self.ssh = await self.run_in_executor(sshClient)
         self.shell = self.ssh.invoke_shell(term="xterm")
-        self.shell.settimeout(0)
+        # self.shell.settimeout(0)
         self.shell_fd = self.shell.fileno()
-        self.loop.add_reader(self.shell_fd, self.from_shell_get_data)
+        # self.shell.
+        self.add_reader(use_executor)
+
+    # def set_shell1(self):
+    #     self.ssh = sshClient()
+    #     self.shell = self.ssh.invoke_shell(term="xterm")
+    #     self.shell.settimeout(0)
+    #     self.shell_fd = self.shell.fileno()
+    #     self.loop.add_reader(self.shell_fd, self.from_shell_get_data, self.shell, async_to_sync(self.async_send))
 
     async def connect(self):
         self.loop = asyncio.get_event_loop()
-
+        # self.new_loop = asyncio.new_event_loop()
+        # logger.debug(f'connect {threading.current_thread()}')
         await self.accept()
-        self.set_shell()
+        await self.async_send("Hello\r\n")
+        await self.set_shell()
+
         # logger.debug(self.ssh)
         # logger.debug(self.shell)
 

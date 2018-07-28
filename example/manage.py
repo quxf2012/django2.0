@@ -17,9 +17,9 @@ if __name__ == "__main__":
             "forget to activate a virtual environment?"
         ) from exc
 
-    # process = Process(target=execute_from_command_line, args=(["", "runworker", 'NotifyTask', 'AsyncTask'],))
-    # print("启动子进程")
-    # process.start()
+    #process = Process(target=execute_from_command_line, args=(["", "runworker", 'NotifyTask', 'AsyncTask'],))
+    #print("启动子进程")
+    #process.start()
 
     execute_from_command_line(sys.argv)
-    # process.join()
+    #process.join()

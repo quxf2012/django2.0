@@ -5,4 +5,4 @@ djangorestframework>=3.8.2
 channels
 channels_redis
 Twisted[tls,http2]
-
+paramiko

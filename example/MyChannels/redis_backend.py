@@ -8,5 +8,5 @@ from channels_redis.core import RedisChannelLayer
 
 
 class RedisChannel(RedisChannelLayer):
-    blpop_timeout=0
-
+    # blpop_timeout=0
+    pass
