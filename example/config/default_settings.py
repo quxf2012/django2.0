@@ -166,7 +166,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": 'MyChannels.redis_backend.RedisChannel',
         'CONFIG': {
-            "hosts": [(PHOST, 6379), ]
+            "hosts": [(PHOST, 30379), ]
         }
     }
 }
